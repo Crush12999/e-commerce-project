@@ -1,0 +1,30 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /ecommerce-nacos-client
+
+spring:
+  application:
+    name: e-commerce-nacos-client # 应用名称也是构成 Nacos 配置管理 dataId 字段的一部分 (当 config.prefix 为空时)
+  cloud:
+    nacos:
+      # 服务注册发现
+      discovery:
+        enabled: true # 如果不想使用 Nacos 进行服务注册和发现, 设置为 false 即可
+        server-addr: 127.0.0.1:8848
+        # server-addr: 127.0.0.1:8848,127.0.0.1:8849,127.0.0.1:8850 # Nacos 服务器地址
+        namespace: 27a44f49-f07a-49a4-9ddf-5d4f35d66e3b
+
+# 暴露端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.alibaba.nacos.client.naming: WARN
