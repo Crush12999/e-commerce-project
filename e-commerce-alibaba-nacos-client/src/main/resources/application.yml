@@ -14,6 +14,9 @@ spring:
         server-addr: 127.0.0.1:8848
         # server-addr: 127.0.0.1:8848,127.0.0.1:8849,127.0.0.1:8850 # Nacos 服务器地址
         namespace: 27a44f49-f07a-49a4-9ddf-5d4f35d66e3b
+        metadata:
+          management:
+            context-path: ${server.servlet.context-path}/actuator
 
 # 暴露端点
 management:
