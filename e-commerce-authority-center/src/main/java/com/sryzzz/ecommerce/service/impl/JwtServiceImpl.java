@@ -1,5 +1,6 @@
 package com.sryzzz.ecommerce.service.impl;
 
+import cn.hutool.crypto.digest.MD5;
 import com.alibaba.fastjson.JSON;
 import com.sryzzz.ecommerce.constant.AuthorityConstant;
 import com.sryzzz.ecommerce.constant.CommonConstant;
@@ -64,7 +65,8 @@ public class JwtServiceImpl implements IJwtService {
     @Override
     public String generateToken(String username, String password, int expire) throws Exception {
         // 首先需要验证用户是否能够通过授权校验, 即输入的用户名和密码能否匹配数据表记录
-        EcommerceUser ecommerceUser = ecommerceUserDao.findByUsernameAndPassword(username, password);
+        String encryptPassword = MD5.create().digestHex(password);
+        EcommerceUser ecommerceUser = ecommerceUserDao.findByUsernameAndPassword(username, encryptPassword);
 
         if (ecommerceUser == null) {
             log.error("can not find user: [{}], [{}]", username, password);
@@ -117,7 +119,8 @@ public class JwtServiceImpl implements IJwtService {
         EcommerceUser ecommerceUser = new EcommerceUser();
         ecommerceUser.setUsername(usernameAndPassword.getUsername());
         // MD5 编码以后
-        ecommerceUser.setPassword(usernameAndPassword.getPassword());
+        String encryptPassword = MD5.create().digestHex(usernameAndPassword.getPassword());
+        ecommerceUser.setPassword(encryptPassword);
         ecommerceUser.setExtraInfo("{}");
 
         // 注册一个新用户, 写一条记录到数据表中
@@ -126,7 +129,7 @@ public class JwtServiceImpl implements IJwtService {
                 ecommerceUser.getId());
 
         // 生成 token 并返回
-        return generateToken(ecommerceUser.getUsername(), ecommerceUser.getPassword());
+        return generateToken(usernameAndPassword.getUsername(), usernameAndPassword.getPassword());
     }
 
     /**

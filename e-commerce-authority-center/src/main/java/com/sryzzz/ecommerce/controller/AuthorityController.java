@@ -1,5 +1,6 @@
 package com.sryzzz.ecommerce.controller;
 
+import cn.hutool.crypto.digest.MD5;
 import com.alibaba.fastjson.JSON;
 import com.sryzzz.ecommerce.annotation.IgnoreResponseAdvice;
 import com.sryzzz.ecommerce.service.IJwtService;
