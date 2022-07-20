@@ -13,6 +13,6 @@ POST http://127.0.0.1:7100/ecommerce-authority-center/authority/register
 Content-Type: application/json
 
 {
-  "username": "test",
+  "username": "test05",
   "password": "123456"
 }

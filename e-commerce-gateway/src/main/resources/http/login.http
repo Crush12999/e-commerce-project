@@ -1,0 +1,17 @@
+### 登录
+POST 127.0.0.1:9001/gateway/e-commerce/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+###
+POST 127.0.0.1:9001/gateway/e-commerce/register
+Content-Type: application/json
+
+{
+  "username": "test03",
+  "password": "123456"
+}
