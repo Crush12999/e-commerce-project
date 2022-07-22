@@ -13,6 +13,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>e-commerce-service-config</module>
+        <module>e-commerce-account-service</module>
     </modules>
     <packaging>pom</packaging>
 
