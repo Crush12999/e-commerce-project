@@ -26,6 +26,11 @@ public class LoginUserInfoInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
 
+        // 部分请求不需要带有身份信息, 即白名单
+        if (checkWhiteListUrl(request.getRequestURI())) {
+            return true;
+        }
+
         // 先尝试从 http header 里面拿到 token
         String token = request.getHeader(CommonConstant.JWT_USER_INFO_KEY);
 
@@ -64,6 +69,17 @@ public class LoginUserInfoInterceptor implements HandlerInterceptor {
         if (AccessContext.getLoginUserInfo() != null) {
             AccessContext.clearLoginUserInfo();
         }
+    }
+
+    /**
+     * 校验是否是白名单接口
+     * swagger2 接口
+     */
+    private boolean checkWhiteListUrl(String url) {
+        return StringUtils.containsAny(
+                url,
+                "springfox", "swagger", "v2", "webjars", "doc.html"
+        );
     }
 
 }
