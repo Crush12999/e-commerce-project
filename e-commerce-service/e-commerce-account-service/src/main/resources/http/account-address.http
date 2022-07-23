@@ -1,0 +1,43 @@
+### 创建用户地址信息
+POST http://127.0.0.1:9001/gateway/ecommerce-account-service/address/create-address
+Content-Type: application/json
+e-commerce-user: eyJhbGciOiJSUzI1NiJ9.eyJlLWNvbW1lcmNlLXVzZXIiOiJ7XCJpZFwiOjEwLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwianRpIjoiMDY1ZmNiM2MtNzQ4OC00NDlkLWExMTAtYzFlY2JmNzA1ZGNlIiwiZXhwIjoxNjU4NTkyMDAwfQ.kpLJ2rOhR73xvKjvxCZb9qUmfBFpwJTVDcQjOhtEXmPWpCpAHIvroCgVr9UVKvfuopc8VtpJpFyNLrn2XrHhyZMxGI18NKg8cq8NQp7-eMDKDE78Lws8YlZaULb3K8lGgON_V0QEYfFLl7YXQvhbj3SSbyC2pkTtdQhkpqlm6Mq7UPkTzW4ABCMJWeJ0zKrzkHx7B4_3ivZRx1TVW-VTbEHwEqCijcwTdFfXoy2lxbOhTt1dfEDsxwlZ6tbvw5_DBHdHupMVyoG9c7xTpniDwDux2khH3SvlSn-r0w6M40aj69skCDgoMNLP4_nvRx-QqBEhYeydB_DGuMj4fEl_ww
+
+{
+  "userId": 10,
+  "addressItems": [
+    {
+      "username": "sryzzz",
+      "phone": "18888888888",
+      "province": "深圳市",
+      "city": "深圳市",
+      "addressDetail": "南山区"
+    }
+  ]
+}
+
+### 当前登录用户地址信息
+GET http://127.0.0.1:9001/gateway/ecommerce-account-service/address/current-address
+Accept: application/json
+e-commerce-user: eyJhbGciOiJSUzI1NiJ9.eyJlLWNvbW1lcmNlLXVzZXIiOiJ7XCJpZFwiOjEwLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwianRpIjoiMDY1ZmNiM2MtNzQ4OC00NDlkLWExMTAtYzFlY2JmNzA1ZGNlIiwiZXhwIjoxNjU4NTkyMDAwfQ.kpLJ2rOhR73xvKjvxCZb9qUmfBFpwJTVDcQjOhtEXmPWpCpAHIvroCgVr9UVKvfuopc8VtpJpFyNLrn2XrHhyZMxGI18NKg8cq8NQp7-eMDKDE78Lws8YlZaULb3K8lGgON_V0QEYfFLl7YXQvhbj3SSbyC2pkTtdQhkpqlm6Mq7UPkTzW4ABCMJWeJ0zKrzkHx7B4_3ivZRx1TVW-VTbEHwEqCijcwTdFfXoy2lxbOhTt1dfEDsxwlZ6tbvw5_DBHdHupMVyoG9c7xTpniDwDux2khH3SvlSn-r0w6M40aj69skCDgoMNLP4_nvRx-QqBEhYeydB_DGuMj4fEl_ww
+
+### 通过 id 获取用户地址信息
+GET http://127.0.0.1:9001/gateway/ecommerce-account-service/address/address-info?id=10
+Accept: application/json
+e-commerce-user: eyJhbGciOiJSUzI1NiJ9.eyJlLWNvbW1lcmNlLXVzZXIiOiJ7XCJpZFwiOjEwLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwianRpIjoiMDY1ZmNiM2MtNzQ4OC00NDlkLWExMTAtYzFlY2JmNzA1ZGNlIiwiZXhwIjoxNjU4NTkyMDAwfQ.kpLJ2rOhR73xvKjvxCZb9qUmfBFpwJTVDcQjOhtEXmPWpCpAHIvroCgVr9UVKvfuopc8VtpJpFyNLrn2XrHhyZMxGI18NKg8cq8NQp7-eMDKDE78Lws8YlZaULb3K8lGgON_V0QEYfFLl7YXQvhbj3SSbyC2pkTtdQhkpqlm6Mq7UPkTzW4ABCMJWeJ0zKrzkHx7B4_3ivZRx1TVW-VTbEHwEqCijcwTdFfXoy2lxbOhTt1dfEDsxwlZ6tbvw5_DBHdHupMVyoG9c7xTpniDwDux2khH3SvlSn-r0w6M40aj69skCDgoMNLP4_nvRx-QqBEhYeydB_DGuMj4fEl_ww
+
+### 获取用户地址信息
+POST http://127.0.0.1:9001/gateway/ecommerce-account-service/address/address-info-by-table-id
+Content-Type: application/json
+e-commerce-user: eyJhbGciOiJSUzI1NiJ9.eyJlLWNvbW1lcmNlLXVzZXIiOiJ7XCJpZFwiOjEwLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwianRpIjoiMDY1ZmNiM2MtNzQ4OC00NDlkLWExMTAtYzFlY2JmNzA1ZGNlIiwiZXhwIjoxNjU4NTkyMDAwfQ.kpLJ2rOhR73xvKjvxCZb9qUmfBFpwJTVDcQjOhtEXmPWpCpAHIvroCgVr9UVKvfuopc8VtpJpFyNLrn2XrHhyZMxGI18NKg8cq8NQp7-eMDKDE78Lws8YlZaULb3K8lGgON_V0QEYfFLl7YXQvhbj3SSbyC2pkTtdQhkpqlm6Mq7UPkTzW4ABCMJWeJ0zKrzkHx7B4_3ivZRx1TVW-VTbEHwEqCijcwTdFfXoy2lxbOhTt1dfEDsxwlZ6tbvw5_DBHdHupMVyoG9c7xTpniDwDux2khH3SvlSn-r0w6M40aj69skCDgoMNLP4_nvRx-QqBEhYeydB_DGuMj4fEl_ww
+
+{
+  "ids": [
+    {
+      "id": 10
+    },
+    {
+      "id": 11
+    }
+  ]
+}
