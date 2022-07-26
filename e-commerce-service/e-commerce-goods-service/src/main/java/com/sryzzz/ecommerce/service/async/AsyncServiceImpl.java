@@ -35,7 +35,7 @@ public class AsyncServiceImpl implements IAsyncService {
     private EcommerceGoodsDao ecommerceGoodsDao;
 
     @Resource
-    private StringRedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 异步将商品信息保存入库
@@ -150,7 +150,7 @@ public class AsyncServiceImpl implements IAsyncService {
         );
 
         // 保存到 Redis 中
-        redisTemplate.opsForHash().putAll(
+        stringRedisTemplate.opsForHash().putAll(
                 GoodsConstant.ECOMMERCE_GOODS_DICT_KEY,
                 id2JsonObject
         );
