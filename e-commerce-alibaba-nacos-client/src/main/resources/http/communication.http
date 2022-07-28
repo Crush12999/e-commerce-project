@@ -1,0 +1,18 @@
+### 获取 Token
+POST http://127.0.0.1:8000/ecommerce-nacos-client/communication/rest-template
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+
+### 获取 Token, 带有负载均衡
+POST http://127.0.0.1:8000/ecommerce-nacos-client/communication/rest-template-load-balancer
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
