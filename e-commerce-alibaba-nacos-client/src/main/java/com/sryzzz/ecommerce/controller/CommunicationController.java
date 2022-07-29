@@ -1,6 +1,7 @@
 package com.sryzzz.ecommerce.controller;
 
 import com.sryzzz.ecommerce.service.communication.UseRestTemplateService;
+import com.sryzzz.ecommerce.service.communication.UseRibbonService;
 import com.sryzzz.ecommerce.vo.JwtToken;
 import com.sryzzz.ecommerce.vo.UsernameAndPassword;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,9 @@ public class CommunicationController {
     @Resource
     private UseRestTemplateService useRestTemplateService;
 
+    @Resource
+    private UseRibbonService useRibbonService;
+
     @PostMapping("/rest-template")
     public JwtToken getTokenFromAuthorityService(@RequestBody UsernameAndPassword usernameAndPassword) {
         return useRestTemplateService.getTokenFromAuthorityService(usernameAndPassword);
@@ -31,6 +35,17 @@ public class CommunicationController {
     public JwtToken getTokenFromAuthorityServiceWithLoadBalancer(@RequestBody UsernameAndPassword usernameAndPassword) {
         return useRestTemplateService.getTokenFromAuthorityServiceWithLoadBalancer(
                 usernameAndPassword);
+    }
+
+    @PostMapping("/ribbon")
+    public JwtToken getTokenFromAuthorityServiceByRibbon(
+            @RequestBody UsernameAndPassword usernameAndPassword) {
+        return useRibbonService.getTokenFromAuthorityServiceByRibbon(usernameAndPassword);
+    }
+
+    @PostMapping("/thinking-in-ribbon")
+    public JwtToken thinkingInRibbon(@RequestBody UsernameAndPassword usernameAndPassword) {
+        return useRibbonService.thinkingInRibbon(usernameAndPassword);
     }
 
 }
