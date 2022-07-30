@@ -36,3 +36,12 @@ Content-Type: application/json
   "username": "admin",
   "password": "123456"
 }
+
+### 通过 OpenFeign 去获取 Token
+POST http://127.0.0.1:8000/ecommerce-nacos-client/communication/token-by-feign
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
