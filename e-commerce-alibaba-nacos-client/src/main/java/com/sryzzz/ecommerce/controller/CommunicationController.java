@@ -1,6 +1,7 @@
 package com.sryzzz.ecommerce.controller;
 
 import com.sryzzz.ecommerce.service.communication.AuthorityFeignClient;
+import com.sryzzz.ecommerce.service.communication.UseFeignApi;
 import com.sryzzz.ecommerce.service.communication.UseRestTemplateService;
 import com.sryzzz.ecommerce.service.communication.UseRibbonService;
 import com.sryzzz.ecommerce.vo.JwtToken;
@@ -30,6 +31,9 @@ public class CommunicationController {
     @Resource
     private AuthorityFeignClient authorityFeignClient;
 
+    @Resource
+    private UseFeignApi useFeignApi;
+
     @PostMapping("/rest-template")
     public JwtToken getTokenFromAuthorityService(@RequestBody UsernameAndPassword usernameAndPassword) {
         return useRestTemplateService.getTokenFromAuthorityService(usernameAndPassword);
@@ -55,6 +59,11 @@ public class CommunicationController {
     @PostMapping("/token-by-feign")
     public JwtToken getTokenByFeign(@RequestBody UsernameAndPassword usernameAndPassword) {
         return authorityFeignClient.getTokenByFeign(usernameAndPassword);
+    }
+
+    @PostMapping("/thinking-in-feign")
+    public JwtToken thinkingInFeign(@RequestBody UsernameAndPassword usernameAndPassword) {
+        return useFeignApi.thinkingInFeign(usernameAndPassword);
     }
 
 }

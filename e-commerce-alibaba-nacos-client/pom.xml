@@ -65,6 +65,12 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-okhttp</artifactId>
         </dependency>
+        <!-- 使用原生的 Feign Api 做的自定义配置, encoder 和 decoder -->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-gson</artifactId>
+            <version>11.0</version>
+        </dependency>
     </dependencies>
 
     <!--
