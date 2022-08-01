@@ -25,6 +25,13 @@ public class NacosClientService {
      * */
     public List<ServiceInstance> getNacosClientInfo(String serviceId) {
 
+        // 测试 UseHystrixCommandAnnotation 的超时
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ex) {
+            //
+        }
+
         log.info("request nacos client to get service instance info: [{}]", serviceId);
         return discoveryClient.getInstances(serviceId);
     }
