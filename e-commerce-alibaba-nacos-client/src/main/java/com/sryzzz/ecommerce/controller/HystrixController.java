@@ -1,5 +1,9 @@
 package com.sryzzz.ecommerce.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.sryzzz.ecommerce.service.NacosClientService;
+import com.sryzzz.ecommerce.service.hystrix.NacosClientHystrixCommand;
+import com.sryzzz.ecommerce.service.hystrix.NacosClientHystrixObservableCommand;
 import com.sryzzz.ecommerce.service.hystrix.UseHystrixCommandAnnotation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
@@ -7,9 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import rx.Observable;
+import rx.Observer;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * @author sryzzz
@@ -24,12 +33,96 @@ public class HystrixController {
     @Resource
     private UseHystrixCommandAnnotation useHystrixCommandAnnotation;
 
+    @Resource
+    private NacosClientService nacosClientService;
+
     @GetMapping("/hystrix-command-annotation")
     public List<ServiceInstance> getNacosClientInfoUseAnnotation(
             @RequestParam String serviceId) {
         log.info("request nacos client info use annotation: [{}], [{}]",
                 serviceId, Thread.currentThread().getName());
         return useHystrixCommandAnnotation.getNacosClientInfo(serviceId);
+    }
+
+    @GetMapping("/simple-hystrix-command")
+    public List<ServiceInstance> getServiceInstanceByServiceId(@RequestParam String serviceId) throws Exception {
+
+        // 第一种方式，同步阻塞
+        List<ServiceInstance> serviceInstances01 = new NacosClientHystrixCommand(
+                nacosClientService, serviceId
+        ).execute();
+        log.info("use execute to get service instances: [{}], [{}]",
+                JSON.toJSONString(serviceInstances01), Thread.currentThread().getName());
+
+        // 第二种方式，异步非阻塞
+        List<ServiceInstance> serviceInstances02;
+        Future<List<ServiceInstance>> future = new NacosClientHystrixCommand(
+                nacosClientService, serviceId
+        ).queue();
+        // 这里可以做一些别的事, 需要的时候再去拿结果
+        serviceInstances02 = future.get();
+        log.info("use queue to get service instances: [{}], [{}]",
+                JSON.toJSONString(serviceInstances02), Thread.currentThread().getName());
+
+        // 第三种方式，热响应调用
+        Observable<List<ServiceInstance>> observable = new NacosClientHystrixCommand(
+                nacosClientService, serviceId
+        ).observe();
+        List<ServiceInstance> serviceInstances03 = observable.toBlocking().single();
+        log.info("use observe to get service instances: [{}], [{}]",
+                JSON.toJSONString(serviceInstances03), Thread.currentThread().getName());
+
+        // 第四种方式，异步冷响应调用
+        Observable<List<ServiceInstance>> toObservable = new NacosClientHystrixCommand(
+                nacosClientService, serviceId
+        ).toObservable();
+        List<ServiceInstance> serviceInstances04 = toObservable.toBlocking().single();
+        log.info("use toObservable to get service instances: [{}], [{}]",
+                JSON.toJSONString(serviceInstances04), Thread.currentThread().getName());
+
+        // execute = queue + get
+        return serviceInstances01;
+    }
+
+    @GetMapping("/hystrix-observable-command")
+    public List<ServiceInstance> getServiceInstancesByServiceIdObservable(
+            @RequestParam String serviceId) {
+
+        List<String> serviceIds = Arrays.asList(serviceId, serviceId, serviceId);
+        List<List<ServiceInstance>> result = new ArrayList<>(serviceIds.size());
+
+        NacosClientHystrixObservableCommand observableCommand =
+                new NacosClientHystrixObservableCommand(nacosClientService, serviceIds);
+
+        // 异步执行命令
+        Observable<List<ServiceInstance>> observe = observableCommand.observe();
+
+        // 注册获取结果
+        observe.subscribe(
+                new Observer<List<ServiceInstance>>() {
+
+                    // 执行 onNext 之后再去执行 onCompleted
+                    @Override
+                    public void onCompleted() {
+                        log.info("all tasks is complete: [{}], [{}]",
+                                serviceId, Thread.currentThread().getName());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(List<ServiceInstance> instances) {
+                        result.add(instances);
+                    }
+                }
+        );
+
+        log.info("observable command result is : [{}], [{}]",
+                JSON.toJSONString(result), Thread.currentThread().getName());
+        return result.get(0);
     }
 
 }

@@ -21,16 +21,19 @@ public class NacosClientService {
     private DiscoveryClient discoveryClient;
 
     /**
-     * <h2>打印 Nacos Client 信息到日志中</h2>
-     * */
+     * 打印 Nacos Client 信息到日志中
+     */
     public List<ServiceInstance> getNacosClientInfo(String serviceId) {
 
         // 测试 UseHystrixCommandAnnotation 的超时
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            //
-        }
+        // try {
+        //     Thread.sleep(2000);
+        // } catch (InterruptedException ex) {
+        //     //
+        // }
+
+        // 测试 NacosClientHystrixCommand 熔断
+        // throw new RuntimeException("has some error");
 
         log.info("request nacos client to get service instance info: [{}]", serviceId);
         return discoveryClient.getInstances(serviceId);
