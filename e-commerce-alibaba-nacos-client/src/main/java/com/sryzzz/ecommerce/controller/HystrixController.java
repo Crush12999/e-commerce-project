@@ -2,10 +2,7 @@ package com.sryzzz.ecommerce.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.sryzzz.ecommerce.service.NacosClientService;
-import com.sryzzz.ecommerce.service.hystrix.CacheHystrixCommand;
-import com.sryzzz.ecommerce.service.hystrix.NacosClientHystrixCommand;
-import com.sryzzz.ecommerce.service.hystrix.NacosClientHystrixObservableCommand;
-import com.sryzzz.ecommerce.service.hystrix.UseHystrixCommandAnnotation;
+import com.sryzzz.ecommerce.service.hystrix.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +33,9 @@ public class HystrixController {
 
     @Resource
     private NacosClientService nacosClientService;
+
+    @Resource
+    private CacheHystrixCommandAnnotation cacheHystrixCommandAnnotation;
 
     @GetMapping("/hystrix-command-annotation")
     public List<ServiceInstance> getNacosClientInfoUseAnnotation(
@@ -157,6 +157,66 @@ public class HystrixController {
         List<ServiceInstance> result04 = command4.execute();
         log.info("result03, result04: [{}], [{}]",
                 JSON.toJSONString(result03), JSON.toJSONString(result04));
+    }
+
+    @GetMapping("/cache-annotation-01")
+    public List<ServiceInstance> useCacheByAnnotation01(@RequestParam String serviceId) {
+
+        log.info("use cache by annotation01(controller) to get nacos client info: [{}]",
+                serviceId);
+
+        List<ServiceInstance> result01 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation01(serviceId);
+        List<ServiceInstance> result02 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation01(serviceId);
+
+        // 清除掉缓存
+        cacheHystrixCommandAnnotation.flushCacheByAnnotation01(serviceId);
+
+        List<ServiceInstance> result03 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation01(serviceId);
+        // 这里有第四次调用
+        return cacheHystrixCommandAnnotation.useCacheByAnnotation01(serviceId);
+    }
+
+    @GetMapping("/cache-annotation-02")
+    public List<ServiceInstance> useCacheByAnnotation02(@RequestParam String serviceId) {
+
+        log.info("use cache by annotation02(controller) to get nacos client info: [{}]",
+                serviceId);
+
+        List<ServiceInstance> result01 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation02(serviceId);
+        List<ServiceInstance> result02 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation02(serviceId);
+
+        // 清除掉缓存
+        cacheHystrixCommandAnnotation.flushCacheByAnnotation02(serviceId);
+
+        List<ServiceInstance> result03 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation02(serviceId);
+        // 这里有第四次调用
+        return cacheHystrixCommandAnnotation.useCacheByAnnotation02(serviceId);
+    }
+
+    @GetMapping("/cache-annotation-03")
+    public List<ServiceInstance> useCacheByAnnotation03(@RequestParam String serviceId) {
+
+        log.info("use cache by annotation03(controller) to get nacos client info: [{}]",
+                serviceId);
+
+        List<ServiceInstance> result01 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation03(serviceId);
+        List<ServiceInstance> result02 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation03(serviceId);
+
+        // 清除掉缓存
+        cacheHystrixCommandAnnotation.flushCacheByAnnotation03(serviceId);
+
+        List<ServiceInstance> result03 =
+                cacheHystrixCommandAnnotation.useCacheByAnnotation03(serviceId);
+        // 这里有第四次调用
+        return cacheHystrixCommandAnnotation.useCacheByAnnotation03(serviceId);
     }
 
 }
